@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router'
-import { useAuth } from '../contexts/Auth'
+import { useAuth } from '../state/authContext'
 
 export function Dashboard() {
   const { user, signOut } = useAuth()

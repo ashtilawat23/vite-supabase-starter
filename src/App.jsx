@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { Signup } from './Signup'
-import { Dashboard } from './Dashboard'
-import { AuthProvider } from '../contexts/Auth'
-import { Login } from './Login'
-import { PrivateRoute } from './PrivateRoute'
+import { Signup } from './components/Signup'
+import { Dashboard } from './components/Dashboard'
+import { AuthProvider } from './state/authContext'
+import { Login } from './components/Login'
+import { PrivateRoute } from './components/PrivateRoute'
 
 export function App() {
   return (
