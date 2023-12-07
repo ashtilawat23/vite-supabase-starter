@@ -1,14 +1,23 @@
-import React from 'react';
-import Login from './components/Login';
-import Logout from './components/Logout';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { Signup } from './Signup'
+import { Dashboard } from './Dashboard'
+import { AuthProvider } from '../contexts/Auth'
+import { Login } from './Login'
+import { PrivateRoute } from './PrivateRoute'
 
-function App() {
+export function App() {
   return (
-    <div className="App">
-      <Login />
-      <Logout />
+    <div>
+      <h1>supabase-auth-react</h1>
+      <Router>
+        <AuthProvider>
+          <Switch>
+            <PrivateRoute exact path="/" component={Dashboard} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/login" component={Login} />
+          </Switch>
+        </AuthProvider>
+      </Router>
     </div>
-  );
+  )
 }
-
-export default App;
