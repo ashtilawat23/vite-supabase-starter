@@ -1,29 +1,49 @@
-import { useState } from 'react';
-import { supabase } from '../supabaseClient';
+import { useRef, useState } from 'react'
+import { useHistory, Link } from 'react-router-dom'
 
-export default function Login() {
-    const [email, setEmail] = useState('');
+import { useAuth } from '../contexts/Auth'
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
+export function Login() {
+  const emailRef = useRef()
+  const passwordRef = useRef()
 
-        const { error } = await supabase.auth.signIn({ email });
-        if (error) console.log('Error logging in:', error.message);
-        else console.log('Check your email for the login link!');
-    };
+  const [error, setError] = useState(null)
 
-    return (
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={handleLogin}>
-                <input 
-                    type="email" 
-                    placeholder="Your email" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <button type="submit">Send magic link</button>
-            </form>
-        </div>
-    );
+  const { signIn } = useAuth()
+  const history = useHistory()
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+
+    const email = emailRef.current.value
+    const password = passwordRef.current.value
+
+    const { error } = await signIn({ email, password })
+
+    if (error) return setError(error)
+
+    history.push('/')
+  }
+
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <div>{error && JSON.stringify(error)}</div>
+
+        <label htmlFor="input-email">Email</label>
+        <input id="input-email" type="email" ref={emailRef} />
+
+        <label htmlFor="input-password">Password</label>
+        <input id="input-password" type="password" ref={passwordRef} />
+
+        <br />
+
+        <button type="submit">Login</button>
+      </form>
+      <br />
+      <p>
+        Don't have an account? <Link to="/signup">Sign Up</Link>
+      </p>
+    </>
+  )
 }
